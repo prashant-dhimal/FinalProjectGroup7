@@ -4,6 +4,8 @@ import os
 import random
 import argparse
 import boto3
+# Adding Kubernetes
+from kubernetes import client, config
 
 
 app = Flask(__name__)
@@ -13,7 +15,15 @@ DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT"))
-APP_BG_IMG = os.environ.get("bgimg") or "Error!!!"
+#APP_BG_IMG = os.environ.get("bgimg") or "Error!!!"
+# Loading Kubernetes configuration
+config.load_incluster_config()
+
+# Get the configMap Object
+v1 = client.CoreV1Api()
+configmap = v1.read_namespaced_config_map('background-image','default')
+#Get the URL of the background image from ConfigMap
+APP_BG_IMG = configmap.data.get('image-url', 'Error!!!')
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(

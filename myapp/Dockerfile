@@ -8,8 +8,9 @@ RUN set -xe \
     && apt-get install -y mysql-client \
     && pip install --upgrade pip \
     && pip install -r requirements.txt \
-    && pip install boto3
-
+    && pip install boto3 \
+    && pip install kubernetes
+    
 EXPOSE 81
 ENTRYPOINT [ "python3" ]
 CMD [ "app.py" ]

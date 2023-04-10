@@ -24,6 +24,7 @@ v1 = client.CoreV1Api()
 configmap = v1.read_namespaced_config_map('background-image','default')
 
 
+
 #Get the URL of the background image from ConfigMap
 APP_BG_IMG = configmap.data.get('image-url', 'Error!!!')
 if APP_BG_IMG:

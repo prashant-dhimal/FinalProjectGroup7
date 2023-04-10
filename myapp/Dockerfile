@@ -13,5 +13,3 @@ RUN set -xe \
 EXPOSE 81
 ENTRYPOINT [ "python3" ]
 CMD [ "app.py" ]
-
-

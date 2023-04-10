@@ -22,8 +22,17 @@ config.load_incluster_config()
 # Get the configMap Object
 v1 = client.CoreV1Api()
 configmap = v1.read_namespaced_config_map('background-image','default')
+
+
+
 #Get the URL of the background image from ConfigMap
 APP_BG_IMG = configmap.data.get('image-url', 'Error!!!')
+if APP_BG_IMG:
+    with open("background.jpg", "wb") as f:
+        f.write(base64.b64decode(APP_BG_IMG))
+
+##Printing Location of Image
+print("Background image location:", APP_BG_IMG)
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(

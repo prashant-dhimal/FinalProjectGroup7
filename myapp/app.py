@@ -15,7 +15,7 @@ DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
-DBPORT = int(os.environ.get("DBPORT"))
+DBPORT = int(os.environ.get("DBPORT") or "3306")
 
 #Logging
 logging.basicConfig(level=logging.INFO)

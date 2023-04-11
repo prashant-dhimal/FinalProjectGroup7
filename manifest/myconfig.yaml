@@ -4,10 +4,9 @@ metadata:
   name: app-config
 data:
   app-name: MyApp
-  background-image-location: my-private-bucket/background.jpg
+  background-image-location: s3://group7image/background.jpg
   aws-region: us-east-1
-  s3-bucket: my-private-bucket
+  s3-bucket: group7image
   name: Group7
   DBHOST: mysql
   DBPORT: "3306"
-  

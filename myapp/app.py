@@ -34,7 +34,7 @@ S3_BUCKET = os.environ.get('S3_BUCKET', '')
 s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
 v1 = client.CoreV1Api()
-configmap = v1.read_namespaced_config_map('app-config','default')
+configmap = v1.read_namespaced_config_map('app-config','final')
 
 
 # Get the URL of the background image from ConfigMap
@@ -49,8 +49,8 @@ if APP_BG_IMG_LOC and S3_BUCKET:
 
 # Get the MySQL DB username and password from K8s secrets
 v1 = client.CoreV1Api()
-username_secret = v1.read_namespaced_secret("my-secrets", "default")
-password_secret = v1.read_namespaced_secret("my-secrets", "default")
+username_secret = v1.read_namespaced_secret("my-secrets", "final")
+password_secret = v1.read_namespaced_secret("my-secrets", "final")
 
 # Decode the secrets to get the username and password
 db_user = username_secret.data.get("username").decode()

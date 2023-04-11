@@ -3,6 +3,7 @@ from pymysql import connections
 import os
 import random
 import argparse
+import logging
 import boto3
 # Adding Kubernetes
 from kubernetes import client, config
@@ -15,49 +16,69 @@ DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT"))
-#APP_BG_IMG = os.environ.get("bgimg") or "Error!!!"
+
+#Logging
+logging.basicConfig(level=logging.INFO)
 # Loading Kubernetes configuration
 config.load_incluster_config()
 
-# Get the configMap Object
+
+
+##Extracting Information from ConfigMap
+
+APP_NAME = os.environ.get('APP_NAME', 'MyApp')
+APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC', '')
+AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
+S3_BUCKET = os.environ.get('S3_BUCKET', '')
+# Intialize s3 bucket
+s3 = boto3.client('s3', region_name=AWS_REGION)
+# Get the ConfigMap Object
 v1 = client.CoreV1Api()
-configmap = v1.read_namespaced_config_map('background-image','default')
+configmap = v1.read_namespaced_config_map('app-config','default')
 
 
+# Get the URL of the background image from ConfigMap
+if APP_BG_IMG_LOC and S3_BUCKET:
+    local_image_path = 'background.jpg'
+    try:
+        s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)
+        logging.info('Background image downloaded from S3: s3://{}/{}'.format(S3_BUCKET, APP_BG_IMG_LOC))
+    except Exception as e:
+        logging.error('Failed to download background image from S3: {}'.format(str(e)))
 
-#Get the URL of the background image from ConfigMap
-APP_BG_IMG = configmap.data.get('image-url', 'Error!!!')
-if APP_BG_IMG:
-    with open("background.jpg", "wb") as f:
-        f.write(base64.b64decode(APP_BG_IMG))
 
-##Printing Location of Image
-print("Background image location:", APP_BG_IMG)
+# Get the MySQL DB username and password from K8s secrets
+v1 = client.CoreV1Api()
+username_secret = v1.read_namespaced_secret("my-secrets", "default")
+password_secret = v1.read_namespaced_secret("my-secrets", "default")
+
+# Decode the secrets to get the username and password
+db_user = username_secret.data.get("username").decode()
+db_password = password_secret.data.get("password").decode()
+
+# Set the environment variable with your name from the ConfigMap
+name = configmap.data.get("name")
+os.environ['NAME'] = name
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
     host= DBHOST,
     port=DBPORT,
-    user= DBUSER,
-    password= DBPWD, 
+    user= db_user,
+    password= db_password, 
     db= DATABASE
-    
 )
+
 output = {}
-table = 'employee';
-
-
-
+table = 'employee'
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', background=APP_BG_IMG)
-
-
+    return render_template('addemp.html', app_name=APP_NAME, background_image_path=local_image_path,name=name)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html', background=APP_BG_IMG)
+    return render_template('about.html',app_name=APP_NAME, background_image_path=local_image_path)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -67,12 +88,10 @@ def AddEmp():
     primary_skill = request.form['primary_skill']
     location = request.form['location']
 
-  
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     try:
-        
         cursor.execute(insert_sql,(emp_id, first_name, last_name, primary_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
@@ -87,7 +106,6 @@ def AddEmp():
 def GetEmp():
     return render_template("getemp.html", background=APP_BG_IMG)
 
-
 @app.route("/fetchdata", methods=['GET','POST'])
 def FetchData():
     emp_id = request.form['emp_id']
@@ -99,7 +117,7 @@ def FetchData():
     try:
         cursor.execute(select_sql,(emp_id))
         result = cursor.fetchone()
-        
+
         # Add No Employee found form
         output["emp_id"] = result[0]
         output["first_name"] = result[1]
@@ -114,7 +132,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"], background=APP_BG_IMG)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"],app_name=APP_NAME, background_image_path=local_image_path)
 
 if __name__ == '__main__':
     

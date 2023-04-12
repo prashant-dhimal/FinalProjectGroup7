@@ -49,12 +49,12 @@ if APP_BG_IMG_LOC and S3_BUCKET:
 
 # Get the MySQL DB username and password from K8s secrets
 v1 = client.CoreV1Api()
-username_secret = v1.read_namespaced_secret("my-secrets", "final")
+#username_secret = v1.read_namespaced_secret("my-secrets", "final")
 password_secret = v1.read_namespaced_secret("my-secrets", "final")
 
 # Decode the secrets to get the username and password
-db_user = username_secret.data.get("username").decode()
-db_password = password_secret.data.get("password").decode()
+#db_user = username_secret.data.get("username").decode()
+db_password = password_secret.data.get("password")
 
 # Set the environment variable with your name from the ConfigMap
 name = configmap.data.get("name")

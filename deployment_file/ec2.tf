@@ -43,7 +43,7 @@ resource "aws_instance" "k8s" {
     project = "clo835"
   }
 
-  key_name                = "week8"
+  key_name                = "project2"
   monitoring              = true
   disable_api_termination = false
   ebs_optimized           = true
@@ -51,5 +51,5 @@ resource "aws_instance" "k8s" {
 
 resource "aws_key_pair" "k8s" {
   key_name   = "week8"
-  public_key = file("${path.module}/week8.pub")
+  public_key = file("${path.module}/project2.pub")
 }

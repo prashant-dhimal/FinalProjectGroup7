@@ -35,7 +35,7 @@ s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
 v1 = client.CoreV1Api()
 configmap = v1.read_namespaced_config_map('app-config','final')
-db_pwd = config_map.data["DBPWD"]
+db_pwd = configmap.data["DBPWD"]
 
 # Get the URL of the background image from ConfigMap
 if APP_BG_IMG_LOC and S3_BUCKET:

@@ -6,6 +6,6 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-data "aws_vpc" "default" {
+data "aws_vpc" "default" {project
   default = true
 }

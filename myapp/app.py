@@ -54,7 +54,7 @@ if APP_BG_IMG_LOC and S3_BUCKET:
 
 # Decode the secrets to get the username and password
 #db_user = username_secret.data.get("username").decode()
-db_password = password_secret.data.get("password")
+#db_password = password_secret.data.get("password")
 
 # Set the environment variable with your name from the ConfigMap
 name = configmap.data.get("name")

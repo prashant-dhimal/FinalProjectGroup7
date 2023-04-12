@@ -11,9 +11,9 @@ from kubernetes import client, config
 
 app = Flask(__name__)
 
-DBHOST = os.environ.get("DBHOST") or "localhost"
+DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER") or "root"
-DBPWD = os.environ.get("DBPWD") or "passwors"
+DBPWD = os.environ.get("DBPWD") or "password"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT") or "3306")
 
@@ -36,6 +36,7 @@ s3 = boto3.client('s3', region_name=AWS_REGION)
 v1 = client.CoreV1Api()
 configmap = v1.read_namespaced_config_map('app-config','final')
 db_pwd = configmap.data["DBPWD"]
+db_host = configmap.data["DBHOST"]
 
 # Get the URL of the background image from ConfigMap
 if APP_BG_IMG_LOC and S3_BUCKET:
@@ -62,7 +63,7 @@ os.environ['NAME'] = name
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
-    host= DBHOST,
+    host= db_host,
     port=DBPORT,
     user= DBUSER,
     password= db_pwd, 

@@ -64,7 +64,7 @@ os.environ['NAME'] = name
 db_conn = connections.Connection(
     host= DBHOST,
     port=DBPORT,
-    user= db_user,
+    user= DBUSER,
     password= db_password, 
     db= DATABASE
 )

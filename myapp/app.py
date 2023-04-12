@@ -65,7 +65,7 @@ db_conn = connections.Connection(
     host= DBHOST,
     port=DBPORT,
     user= DBUSER,
-    password= db_password, 
+    password= db_pwd, 
     db= DATABASE
 )
 

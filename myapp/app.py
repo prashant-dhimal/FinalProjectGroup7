@@ -34,7 +34,7 @@ v1 = client.CoreV1Api()
 #AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
 #S3_BUCKET = os.environ.get('S3_BUCKET') or "s3bucket"
 # Intialize s3 bucket
-s3 = boto3.client('s3', region_name=AWS_REGION)
+#s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
 APP_BG_IMG_LOC = config_map.data.get('background-image-location', '')
 AWS_REGION = config_map.data.get('aws-region', 'us-east-1')
@@ -42,7 +42,7 @@ S3_BUCKET = config_map.data.get('s3-bucket', '')
 name = config_map.data.get('name', '')
 #db_pwd = configmap.data["DBPWD"]
 db_host = configmap.data["DBHOST"]
-
+s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the URL of the background image from ConfigMap
 if APP_BG_IMG_LOC and S3_BUCKET:
     local_image_path = 'background.jpg'

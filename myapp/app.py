@@ -22,21 +22,24 @@ logging.basicConfig(level=logging.INFO)
 # Loading Kubernetes configuration
 config.load_incluster_config()
 v1 = client.CoreV1Api()
-configmap = v1.read_namespaced_config_map('app-config','final')
-background_image_location = configmap.data['background-image-location']
-s3bucket = configmap.data['s3-bucket']
+#configmap = v1.read_namespaced_config_map('app-config','final')
+#background_image_location = configmap.data['background-image-location']
+#s3bucket = configmap.data['s3-bucket']
 
 
 ##Extracting Information from ConfigMap
 
-APP_NAME = os.environ.get('APP_NAME', 'MyApp')
-APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC') or "background_image_loction"
-AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
-S3_BUCKET = os.environ.get('S3_BUCKET') or "s3bucket"
+#APP_NAME = os.environ.get('APP_NAME', 'MyApp')
+#APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC') or "background_image_loction"
+#AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
+#S3_BUCKET = os.environ.get('S3_BUCKET') or "s3bucket"
 # Intialize s3 bucket
 s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
-
+APP_BG_IMG_LOC = config_map.data.get('background-image-location', '')
+AWS_REGION = config_map.data.get('aws-region', 'us-east-1')
+S3_BUCKET = config_map.data.get('s3-bucket', '')
+name = config_map.data.get('name', '')
 #db_pwd = configmap.data["DBPWD"]
 db_host = configmap.data["DBHOST"]
 
@@ -81,7 +84,7 @@ def home():
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html',app_name=APP_NAME, background_image_path=local_image_path)
+    return render_template('about.html',app_name=APP_NAME, background_image_path=local_image_path, name=name)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():

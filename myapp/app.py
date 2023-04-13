@@ -29,7 +29,7 @@ configmap = v1.read_namespaced_config_map('app-config','final')
 
 ##Extracting Information from ConfigMap
 
- APP_NAME = os.environ.get('APP_NAME', 'MyApp')
+APP_NAME = os.environ.get('APP_NAME', 'MyApp')
 #APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC') or "background_image_loction"
 #AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
 #S3_BUCKET = os.environ.get('S3_BUCKET') or "s3bucket"

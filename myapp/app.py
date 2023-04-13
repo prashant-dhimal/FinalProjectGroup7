@@ -21,20 +21,22 @@ DBPORT = int(os.environ.get("DBPORT") or "3306")
 logging.basicConfig(level=logging.INFO)
 # Loading Kubernetes configuration
 config.load_incluster_config()
-
+v1 = client.CoreV1Api()
+configmap = v1.read_namespaced_config_map('app-config','final')
+background_image_location = configmap.data['background-image-location']
+s3bucket = configmap.data['s3-bucket']
 
 
 ##Extracting Information from ConfigMap
 
 APP_NAME = os.environ.get('APP_NAME', 'MyApp')
-APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC', '')
+APP_BG_IMG_LOC = os.environ.get('APP_BG_IMG_LOC') or "background_image_loction"
 AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
-S3_BUCKET = os.environ.get('S3_BUCKET', '')
+S3_BUCKET = os.environ.get('S3_BUCKET') or "s3bucket"
 # Intialize s3 bucket
 s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
-v1 = client.CoreV1Api()
-configmap = v1.read_namespaced_config_map('app-config','final')
+
 #db_pwd = configmap.data["DBPWD"]
 db_host = configmap.data["DBHOST"]
 

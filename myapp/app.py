@@ -47,10 +47,14 @@ s3 = boto3.client('s3', region_name=AWS_REGION)
 if APP_BG_IMG_LOC and S3_BUCKET:
     local_image_path = 'background.jpg'
     try:
-        s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)
-        logging.info('Background image downloaded from S3: s3://{}/{}'.format(S3_BUCKET, APP_BG_IMG_LOC))
+        s3.download_file(S3_BUCKET, APP_BG_IMG_LOC[len('s3://'):], local_image_path)
+        logging.info('Background image downloaded from S3: {}'.format(APP_BG_IMG_LOC))
     except Exception as e:
         logging.error('Failed to download background image from S3: {}'.format(str(e)))
+        #s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)
+        #logging.info('Background image downloaded from S3: s3://{}/{}'.format(S3_BUCKET, APP_BG_IMG_LOC))
+    #except Exception as e:
+     #   logging.error('Failed to download background image from S3: {}'.format(str(e)))
 
 
 # Get the MySQL DB username and password from K8s secrets

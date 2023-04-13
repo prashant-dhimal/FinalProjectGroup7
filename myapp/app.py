@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 # Loading Kubernetes configuration
 config.load_incluster_config()
 v1 = client.CoreV1Api()
-#configmap = v1.read_namespaced_config_map('app-config','final')
+configmap = v1.read_namespaced_config_map('app-config','final')
 #background_image_location = configmap.data['background-image-location']
 #s3bucket = configmap.data['s3-bucket']
 
@@ -36,10 +36,10 @@ v1 = client.CoreV1Api()
 # Intialize s3 bucket
 #s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
-APP_BG_IMG_LOC = config_map.data.get('background-image-location', '')
-AWS_REGION = config_map.data.get('aws-region', 'us-east-1')
-S3_BUCKET = config_map.data.get('s3-bucket', '')
-name = config_map.data.get('name', '')
+APP_BG_IMG_LOC = configmap.data.get('background-image-location', '')
+AWS_REGION = configmap.data.get('aws-region', 'us-east-1')
+S3_BUCKET = configmap.data.get('s3-bucket', '')
+name = configmap.data.get('name', '')
 #db_pwd = configmap.data["DBPWD"]
 db_host = configmap.data["DBHOST"]
 s3 = boto3.client('s3', region_name=AWS_REGION)

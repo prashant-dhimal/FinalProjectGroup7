@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 DBHOST = os.environ.get("DBHOST")
 DBUSER = os.environ.get("DBUSER") or "root"
-DBPWD = os.environ.get("DBPWD") or "password"
+DBPWD = os.environ.get("DBPWD") or "clo835"
 DATABASE = os.environ.get("DATABASE") or "employees"
 DBPORT = int(os.environ.get("DBPORT") or "3306")
 

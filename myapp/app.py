@@ -35,8 +35,8 @@ s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
 v1 = client.CoreV1Api()
 configmap = v1.read_namespaced_config_map('app-config','final')
-db_pwd = configmap.data["DBPWD"]
-db_host = configmap.data["DBHOST"]
+#db_pwd = configmap.data["DBPWD"]
+#db_host = configmap.data["DBHOST"]
 
 # Get the URL of the background image from ConfigMap
 if APP_BG_IMG_LOC and S3_BUCKET:
@@ -63,10 +63,10 @@ os.environ['NAME'] = name
 
 # Create a connection to the MySQL database
 db_conn = connections.Connection(
-    host= db_host,
+    host= DBHOST,
     port=DBPORT,
     user= DBUSER,
-    password= db_pwd, 
+    password= DBPWD, 
     db= DATABASE
 )
 

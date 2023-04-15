@@ -48,7 +48,7 @@ if APP_BG_IMG_LOC and S3_BUCKET:
     local_image_path = 'background.jpg'
     try:
         s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)
-        logging.info('Background image downloaded from S3: //{}/{}'.format(S3_BUCKET,APP_BG_IMG_LOC))
+        logging.info('Background image downloaded from S3: s3://{}/{}'.format(S3_BUCKET,APP_BG_IMG_LOC))
     except Exception as e:
         logging.error('Failed to download background image from S3: {}'.format(str(e)))
         #s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)

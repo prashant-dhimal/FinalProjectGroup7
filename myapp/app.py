@@ -84,7 +84,7 @@ table = 'employee'
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', app_name=APP_NAME, background_image_path=local_image_path,name=name)
+    return render_template('addemp.html', app_name=APP_NAME, background_image_path=/app/backround.jpg,name=name)
 
 @app.route("/about", methods=['GET','POST'])
 def about():

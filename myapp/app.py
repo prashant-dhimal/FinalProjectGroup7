@@ -84,11 +84,11 @@ table = 'employee'
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('addemp.html', app_name=APP_NAME, background_image_path='/app/backround.png',name=name)
+    return render_template('addemp.html', app_name=APP_NAME, background_image_path='/app/background.png',name=name)
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html',app_name=APP_NAME, background_image_path='/app/backround.png', name=name)
+    return render_template('about.html',app_name=APP_NAME, background_image_path='/app/background.png', name=name)
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():

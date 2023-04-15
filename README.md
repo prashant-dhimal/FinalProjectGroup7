@@ -3,7 +3,7 @@
 
 # Create EKS Cluster
 ```sh
-cd deployment
+cd deployment_file
 
 # Install eksctl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp

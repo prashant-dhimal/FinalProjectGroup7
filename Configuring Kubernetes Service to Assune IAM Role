@@ -14,3 +14,11 @@ cat >S3BucketAccess.json <<EOF
     ]
 }
 EOF
+
+## Creating IAM Policy
+
+aws iam create-policy --policy-name S3Access --policy-document file://S3BucketAccess.json
+
+## Configuring AWS Account ID to an environment variable
+
+account_id=$(aws sts get-caller-identity --query "Account" --output text)

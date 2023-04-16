@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from pymysql import connections
 import os
 import random
@@ -36,7 +36,7 @@ APP_NAME = os.environ.get('APP_NAME', 'MyApp')
 # Intialize s3 bucket
 #s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
-APP_BG_IMG_LOC = "background.png"
+APP_BG_IMG_LOC = configmap.data.get('background-image-location', '')
 AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
 S3_BUCKET = os.environ.get('S3_BUCKET') or "group7background"
 name = configmap.data.get('name', '')
@@ -45,7 +45,7 @@ db_host = configmap.data["DBHOST"]
 s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the URL of the background image from ConfigMap
 if APP_BG_IMG_LOC and S3_BUCKET:
-    local_image_path = 'background.png'
+    local_image_path = 'static/background.png'
     try:
         s3.download_file(S3_BUCKET, APP_BG_IMG_LOC, local_image_path)
         logging.info('Background image downloaded from S3: s3://{}/{}'.format(S3_BUCKET,APP_BG_IMG_LOC))
@@ -88,7 +88,8 @@ def home():
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html',app_name=APP_NAME, background_image_path='/app/background.png', name=name)
+    return render_template('about.html', app_name=APP_NAME, background_image_path=url_for("static", filename="background.png"), name=name)
+
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -110,11 +111,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=APP_BG_IMG)
+    return render_template('addempoutput.html', name=emp_name)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=APP_BG_IMG)
+    return render_template("getemp.html")
 
 @app.route("/fetchdata", methods=['GET','POST'])
 def FetchData():
@@ -142,7 +143,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"],app_name=APP_NAME, background_image_path=local_image_path)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"],app_name=APP_NAME)
 
 if __name__ == '__main__':
     

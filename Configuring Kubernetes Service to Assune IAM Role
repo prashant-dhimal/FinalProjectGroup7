@@ -1,0 +1,24 @@
+###Configuring kubernetes service accunt to Assume an IAM Role
+
+## Configuring Bucket Policy
+
+cat >S3BucketAccess.json <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-pod-secrets-bucket"
+        }
+    ]
+}
+EOF
+
+## Creating IAM Policy
+
+aws iam create-policy --policy-name S3Access --policy-document file://S3BucketAccess.json
+
+## Configuring AWS Account ID to an environment variable
+
+account_id=$(aws sts get-caller-identity --query "Account" --output text)

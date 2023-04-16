@@ -36,7 +36,7 @@ APP_NAME = os.environ.get('APP_NAME', 'MyApp')
 # Intialize s3 bucket
 #s3 = boto3.client('s3', region_name=AWS_REGION)
 # Get the ConfigMap Object
-APP_BG_IMG_LOC = "background.png"
+APP_BG_IMG_LOC = configmap.data.get('background-image-location', '')
 AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
 S3_BUCKET = os.environ.get('S3_BUCKET') or "group7background"
 name = configmap.data.get('name', '')

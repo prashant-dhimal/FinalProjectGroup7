@@ -42,7 +42,7 @@ jobs:
         env:
          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
          ECR_REPOSITORY: finalproject_repo_app
-         IMAGE_TAG: G7.29
+         IMAGE_TAG: G7.30
         run: | 
           cd myapp/
           ls -ltra

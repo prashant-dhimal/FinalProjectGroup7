@@ -88,7 +88,8 @@ def home():
 
 @app.route("/about", methods=['GET','POST'])
 def about():
-    return render_template('about.html',app_name=APP_NAME, background_image_path='url_for('static', filename='background.png')', name=name)
+    return render_template('about.html', app_name=APP_NAME, background_image_path=url_for("static", filename="background.png"), name=name)
+
     
 @app.route("/addemp", methods=['POST'])
 def AddEmp():

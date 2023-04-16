@@ -111,11 +111,11 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('addempoutput.html', name=emp_name, background=APP_BG_IMG)
+    return render_template('addempoutput.html', name=emp_name)
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
-    return render_template("getemp.html", background=APP_BG_IMG)
+    return render_template("getemp.html")
 
 @app.route("/fetchdata", methods=['GET','POST'])
 def FetchData():
@@ -143,7 +143,7 @@ def FetchData():
         cursor.close()
 
     return render_template("getempoutput.html", id=output["emp_id"], fname=output["first_name"],
-                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"],app_name=APP_NAME, background_image_path=local_image_path)
+                           lname=output["last_name"], interest=output["primary_skills"], location=output["location"],app_name=APP_NAME)
 
 if __name__ == '__main__':
     

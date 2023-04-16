@@ -14,7 +14,7 @@ DBHOST = os.environ.get("DBHOST") or "localhost"
 DBUSER = os.environ.get("DBUSER") or "root"
 DBPWD = os.environ.get("DBPWD") or "passwors"
 DATABASE = os.environ.get("DATABASE") or "employees"
-DBPORT = int(os.environ.get("DBPORT"))
+DBPORT = int(os.environ.get("DBPORT") or "3306"))
 #APP_BG_IMG = os.environ.get("bgimg") or "Error!!!"
 # Loading Kubernetes configuration
 config.load_incluster_config()

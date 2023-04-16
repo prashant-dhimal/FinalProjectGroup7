@@ -1,0 +1,16 @@
+###Configuring kubernetes service accunt to Assume an IAM Role
+
+## Configuring Bucket Policy
+
+cat >S3BucketAccess.json <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::my-pod-secrets-bucket"
+        }
+    ]
+}
+EOF

@@ -16,3 +16,19 @@ eksctl completion bash >> ~/.bash_completion
 # create cluster
 eksctl create cluster -f eks_config.yaml
 ```
+
+## Configuring Kubernetes Service to Assune IAM Role
+follow this document present in the project named Configuring Kubernetes Service to Assune IAM Role
+
+## Commands to run the application
+```sh
+cd mainfest
+kubectl create namespace final
+kubectl apply -f role.yaml -n final 
+kubectl apply -f pvc.yaml -n final
+kubectl apply -f mysql_deployment -n final
+kubectl apply -f myconfig -n final
+kubectl apply -f mysql_service -n final
+kubectl apply -f app_deployment-n final
+kubectl apply -f myappservice -n final
+```

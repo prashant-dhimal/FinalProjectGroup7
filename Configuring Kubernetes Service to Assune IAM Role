@@ -29,3 +29,25 @@ oidc_provider=$(aws eks describe-cluster --name clo835 --region us-east-1 --quer
 ## Seting variable for Namespace and Service Account
 export namespace=final
 export service_account=clo835-sa
+
+##Creating Trust Relationship for IAM Role
+cat >trust-relationship.json <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::$account_id:oidc-provider/$oidc_provider"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "$oidc_provider:aud": "sts.amazonaws.com",
+          "$oidc_provider:sub": "system:serviceaccount:$namespace:$service_account"
+        }
+      }
+    }
+  ]
+}
+EOF

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      serviceAccountName: clo835-sa
+      containers:
+      - name: myapp
+        image: 072402120656.dkr.ecr.us-east-1.amazonaws.com/finalproject_repo_app:G7.31
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        env:
+        - name: DBPWD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: password
+      volumes:
+      - name: config-volume
+        configMap:
+          name: app-config

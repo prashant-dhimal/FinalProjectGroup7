@@ -1,0 +1,69 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: mysql-secrets-reader
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["mysql-secrets"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mysql-secrets-reader-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mysql-secrets-reader
+subjects:
+- kind: ServiceAccount
+  name: clo835-sa
+  namespace: final
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: configmap-reader
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: configmap-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: clo835-sa
+roleRef:
+  kind: Role
+  name: configmap-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: final
+  name: CLO835
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["create", "get", "list"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: CLO835-binding
+  namespace: final
+subjects:
+- kind: ServiceAccount
+  name: clo835-sa
+  namespace: final
+roleRef:
+  kind: Role
+  name: CLO835
+  apiGroup: rbac.authorization.k8s.io

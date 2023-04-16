@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  annotations:
+    kubernetes.io/service-account.name: clo835-sa
+  name: app-config
+data:
+  app-name: MyApp
+  background-image-location: background1.png
+  aws-region: us-east-1
+  s3-bucket: group7background
+  name: Prashant
+  DBHOST: "mysql-service"
+  DBPORT: "3306"
+  #DBPWD: "$(mysql-secrets.password)"

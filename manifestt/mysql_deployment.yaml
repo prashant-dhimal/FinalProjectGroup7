@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-group7   # Updated name
+spec:
+  selector:
+    matchLabels:
+      app: mysql-group7
+  template:
+    metadata:
+      labels:
+        app: mysql-group7
+    spec:
+      containers:
+      - name: mysql
+        image: 072402120656.dkr.ecr.us-east-1.amazonaws.com/finalproject_repo_db:G7.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secrets
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc

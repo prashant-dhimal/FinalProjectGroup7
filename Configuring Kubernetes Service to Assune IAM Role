@@ -22,3 +22,10 @@ aws iam create-policy --policy-name S3Access --policy-document file://S3BucketAc
 ## Configuring AWS Account ID to an environment variable
 
 account_id=$(aws sts get-caller-identity --query "Account" --output text)
+## Setting Cluster OIDC to an environment variable 
+
+oidc_provider=$(aws eks describe-cluster --name clo835 --region us-east-1 --query "cluster.identity.oidc.issuer" --output text | sed -e "s/^https:\/\///")
+
+## Seting variable for Namespace and Service Account
+export namespace=final
+export service_account=clo835-sa

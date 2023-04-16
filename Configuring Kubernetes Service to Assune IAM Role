@@ -51,3 +51,13 @@ cat >trust-relationship.json <<EOF
   ]
 }
 EOF
+
+## Creating IAM Role
+aws iam create-role --role-name EKSBUCKET --assume-role-policy-document file://trust-relationship.json --description "my-role-description"
+
+##Attaching IAM Policy(S3Access) to the IAM ROle(EKSBUCKET)
+
+aws iam attach-role-policy --role-name EKSBUCKET --policy-arn=arn:aws:iam::$account_id:policy/S3Access
+
+## Annoting Serice Account with the IAM Role
+kubectl annotate serviceaccount -n $namespace $service_account eks.amazonaws.com/role-arn=arn:aws:iam::$account_id:role/EKSBUCKET

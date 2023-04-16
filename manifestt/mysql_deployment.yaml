@@ -13,14 +13,13 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: 072402120656.dkr.ecr.us-east-1.amazonaws.com/finalproject_repo_db:G7.0
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secrets
               key: password
-        - name:   
         ports:
         - containerPort: 3306
         volumeMounts:
